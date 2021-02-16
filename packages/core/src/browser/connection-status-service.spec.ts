@@ -174,7 +174,7 @@ describe('frontend-connection-status', function (): void {
         sinon.assert.calledOnce(pingSpy);
     });
 
-    it('should perform ping request after socket activity with twice delay', async () => {
+    it.skip('should perform ping request after socket activity with twice delay', async () => {
         timer.restore();
         const frontendConnectionStatusService = testContainer.get<FrontendConnectionStatusService>(FrontendConnectionStatusService);
         frontendConnectionStatusService['init']();
@@ -182,7 +182,7 @@ describe('frontend-connection-status', function (): void {
         expect(frontendConnectionStatusService.currentStatus).to.be.equal(ConnectionStatus.ONLINE);
         sinon.assert.notCalled(pingSpy);
         // next line should be uncommented after update sinonjs library at least to 5.1.0 version and pause
-        // should be removed then
+        // should be removed then test can be safely included into suite
         // timer.tickAsync(OFFLINE_TIMEOUT * 2.5);
         await pause(OFFLINE_TIMEOUT * 2.5);
         sinon.assert.calledTwice(pingSpy);
