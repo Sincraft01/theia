@@ -85,7 +85,7 @@ export abstract class AbstractConnectionStatusService implements ConnectionStatu
     @inject(ILogger)
     protected readonly logger: ILogger;
 
-    constructor(@inject(ConnectionStatusOptions) @optional() protected readonly options: ConnectionStatusOptions = ConnectionStatusOptions.DEFAULT) { }
+    protected constructor(@inject(ConnectionStatusOptions) @optional() protected readonly options: ConnectionStatusOptions = ConnectionStatusOptions.DEFAULT) { }
 
     get onStatusChange(): Event<ConnectionStatus> {
         return this.statusChangeEmitter.event;
@@ -121,6 +121,10 @@ export class FrontendConnectionStatusService extends AbstractConnectionStatusSer
 
     @inject(WebSocketConnectionProvider) protected readonly wsConnectionProvider: WebSocketConnectionProvider;
     @inject(PingService) protected readonly pingService: PingService;
+
+    constructor(@inject(ConnectionStatusOptions) @optional() protected readonly options: ConnectionStatusOptions = ConnectionStatusOptions.DEFAULT) {
+        super(options);
+    }
 
     @postConstruct()
     protected init(): void {
@@ -163,7 +167,9 @@ export class FrontendConnectionStatusService extends AbstractConnectionStatusSer
     }
 
     protected clearTimeout(handle?: number): void {
-        window.clearTimeout(handle);
+        if (handle !== undefined) {
+            window.clearTimeout(handle);
+        }
     }
 }
 
